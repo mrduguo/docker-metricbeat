@@ -1,0 +1,22 @@
+system.hostfs: /hostfs
+metricbeat.modules:
+- module: system
+  metricsets:
+  - cpu
+  - load
+  - diskio
+  - filesystem
+  - fsstat
+  - memory
+  - network
+  - process
+  processes: ['.*']
+  period: 10s
+  filters:
+  - drop_event.when.regexp.mount_point: '^/(sys|cgroup|proc|dev|etc|host)($|/)'
+output.file:
+  path: /logs/metricbeat
+  filename: metricbeat.json
+logging:
+  metrics.enabled: false
+  to_files: false
